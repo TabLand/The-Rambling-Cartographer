@@ -1,6 +1,5 @@
 access_logs.tar.gz
 IP2LOCATION-API
 IP2LOCATION-LITE-DB5.BIN
-vendor
 the-rambling-cartographer.list
-composer.lock
+data
