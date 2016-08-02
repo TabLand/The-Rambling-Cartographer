@@ -1,5 +1,9 @@
 <?php
     require_once "config_loader.php";
+    require_once "IP2LOCATION-API/IP2Location.php";
+
+    $loc_db = new \IP2Location\Database('IP2LOCATION-LITE-DB5.BIN/IP2LOCATION-LITE-DB5.BIN', \IP2Location\Database::MEMORY_CACHE);
+    
     $conf = get_config();
     $data_dir = $conf["DATA_DIRECTORY"];
 
@@ -9,15 +13,15 @@
         $chunk_id = $_GET["CHUNK"];
     }
     else {
-        $result["error"] = "Which chunk do you want mate?";
+        $result["error"] = "Which chunk did you want mate?";
         print_and_exit($result);
     }
     
     $chunk_path = "$data_dir/$chunk_id";
 
     if(file_exists($chunk_path)){
-        $lines = read_file_in_reverse($chunk_path);
-        print_and_exit($lines);
+        $entries = read_file_in_reverse($chunk_path, $loc_db);
+        print_and_exit($entries);
     }
     else {
         $result["error"] = "Sorry, chunk not found";
@@ -25,11 +29,11 @@
     }
 
     function print_and_exit($result){
-        echo json_encode($result, JSON_PRETTY_PRINT);
+        echo json_encode($result);
         exit;
     }
 
-    function read_file_in_reverse($chunk_path){
+    function read_file_in_reverse($chunk_path, $loc_db){
         $fh = fopen($chunk_path,"r");
         $pos = -2;
         $lines = array();
@@ -38,7 +42,12 @@
             $char = fgetc($fh);
             
             if (PHP_EOL == $char){
-                $lines[] = $current_line;
+                $parts        = explode("\t", $current_line, 2);
+                $unixtime     = $parts[0];
+                $ip_address   = $parts[1];
+                $location     = $loc_db->lookup($ip_address, \IP2Location\Database::ALL);
+
+                $lines[]      = array("time" => $unixtime, "latitude" => $location["latitude"], "longitude" => $location["longitude"]);
                 $current_line = '';
             } 
             else {
