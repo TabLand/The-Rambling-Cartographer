@@ -1,12 +1,30 @@
-body {
-    width: 100%;
+@font-face
+{
+    font-family: cicle;
+    src: url(../Cicle_Gordita.ttf);
+}
+
+body,input {
+	font-family:'Josefin Sans',cicle;
+}
+
+a    {
+	text-decoration: none;
+	color: white;
+}
+html,body {
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    background-color: black;
-    color: white;
+    width: 100%;
+    overflow: hidden;    
+}
+body {
+	background-color: black;
+	color: white;
+	text-align: left;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
     text-align: center;
-    font-family:arial;
 }
 
 div#earth_div {
