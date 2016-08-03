@@ -1,14 +1,17 @@
 var chunks_list = [];
 var location_list = [];
 var pending_location_update = false;
-var rotate_speed = 0;
+var rotate_speed = 0; 
+var rotate_speed_slave = 0.1; 
 var start_timestamp = Date.now() / 1000;
 var datetime_element = null; 
 var markers_list = [];
-var maximum_markers = 300;
+var maximum_markers = 20;
 var last_marker_add_time = 0;
-var new_marker_wait_time = 0.1;
-var marker_scale = 0.05;
+var new_marker_wait_time = 0.001;
+var marker_radius = 0.05;
+var marker_sections = 40;
+var marker_colour = '#f00';
 
 function cache_more_locations(){
     if(chunks_list.length != 0){
@@ -50,8 +53,7 @@ function add_marker_to_map(now){
         }
         while (markers_list.length > maximum_markers){
             marker = markers_list.shift();
-            marker[0].destroy();
-            marker[1].destroy();
+            marker.destroy();
         }
     }
 }
@@ -71,7 +73,7 @@ function initialize() {
 
     WE.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
         minZoom: 0,
-        maxZoom: 100,
+        maxZoom: 1000,
         attribution: 'https://github.com/stamen/toner-carto'
     }).addTo(earth);
 
@@ -84,6 +86,21 @@ function initialize() {
         render_locations(now);
         requestAnimationFrame(animate);
     });
+    rotate_speed = rotate_speed_slave;
+    $("a#resume").hide();
+    $("div#earth_div").mousedown(pause_rotation);
+}
+
+function pause_rotation(){
+    rotate_speed = 0;
+    $("a#pause").hide();
+    $("a#resume").show();
+}
+
+function resume_rotation(){
+    rotate_speed = rotate_speed_slave;
+    $("a#pause").show();
+    $("a#resume").hide();
 }
 
 function render_locations(now){
@@ -118,27 +135,14 @@ function make_and_add_marker(location_entry){
 	latitude = location_entry[0];
 	longitude = location_entry[1];
 
-	u1 = [latitude - 2.5 * marker_scale, longitude - 2   * marker_scale];
-	u2 = [latitude - 2.5 * marker_scale, longitude - 5   * marker_scale];
-	u3 = [latitude + 2.5 * marker_scale, longitude - 5   * marker_scale];
-	u4 = [latitude + 2.5 * marker_scale, longitude - 7   * marker_scale];
-	u5 = [latitude + 6.5 * marker_scale, longitude - 3.5 * marker_scale];
-	u6 = [latitude + 2.5 * marker_scale, longitude]
-	u7 = [latitude + 2.5 * marker_scale, longitude -2    * marker_scale];
-
-	d1 = [latitude + 2.5 * marker_scale, longitude + 2   * marker_scale];
-	d2 = [latitude + 2.5 * marker_scale, longitude + 5   * marker_scale];
-	d3 = [latitude - 2.5 * marker_scale, longitude + 5   * marker_scale];
-	d4 = [latitude - 2.5 * marker_scale, longitude + 7   * marker_scale];
-	d5 = [latitude - 6.5 * marker_scale, longitude + 3.5 * marker_scale];
-	d6 = [latitude - 2.5 * marker_scale, longitude];
-	d7 = [latitude - 2.5 * marker_scale, longitude + 2   * marker_scale];
-
-	arrow_up   = [u1, u2, u3, u4, u5, u6, u7];
-	arrow_down = [d1, d2, d3, d4, d5, d6, d7];
+    circle = [];
+    for(i = 0; i < (2 * Math.PI) ; i += (2 * Math.PI / marker_sections)){
+        lon = longitude + marker_radius * Math.cos(i);
+        lat = latitude  + marker_radius * Math.sin(i);
+        circle.push([lat,lon]);
+    }
 	
-	options    = {color: '#000', opacity: 0.8, fillColor: '#000', fillOpacity: 1, weight: 0};
-    arrow_up   = WE.polygon(arrow_up,   options).addTo(earth);
-    arrow_down = WE.polygon(arrow_down, options).addTo(earth);
-	markers_list.push([arrow_up, arrow_down]);
+	options    = {color: marker_colour, opacity: 1.0, fillColor: marker_colour, fillOpacity: 1, weight: 0};
+    circle = WE.polygon(circle, options).addTo(earth);
+	markers_list.push(circle);
 }
