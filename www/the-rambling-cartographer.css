@@ -18,3 +18,12 @@ div#earth_div {
     top: 0px;
     left: 0px;   
 }
+
+#datetime {
+    position: absolute;
+    right: 30px;
+    top: 0px;
+    z-index: 1000;
+    color: white;
+    background: none;
+}
