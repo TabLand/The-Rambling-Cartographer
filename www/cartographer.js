@@ -10,7 +10,7 @@ var maximum_markers = 300;
 function cache_more_locations(){
     if(chunks_list.length != 0){
         chunk_id = "";
-        while(chunk_id == ""){
+        while(chunk_id == "" && chunks_id != undefined && chunks_id != null){
             chunk_id = chunks_list.pop();
         }
         $.getJSON("/the-rambling-cartographer/get_chunk_data.php?CHUNK=" + chunk_id, process_more_cached_locations);
