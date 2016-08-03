@@ -21,9 +21,14 @@ function cache_more_locations(){
 }
 
 function process_more_cached_locations(locations){
-    for(id in locations){
-        location_entry = locations[id];
-        location_list.push(location_entry);
+    if(locations.error != undefined){
+        alert(locations.error);
+    }
+    else{
+        for(id in locations){
+            location_entry = locations[id];
+            location_list.push(location_entry);
+        }
     }
     pending_location_update = false;
 }
@@ -112,4 +117,30 @@ function get_chunks_list(){
 function got_chunks_list(data){
     chunks_list = data.split("\n");
     cache_more_locations();
+}
+
+function make_marker(location){
+	latitude = location[0];
+	longitude = location[1];
+
+	a1 = [latitude - 2.5 * marker_scale, longitude - 2   * marker_scale];
+	a2 = [latitude - 2.5 * marker_scale, longitude - 5   * marker_scale];
+	a3 = [latitude + 2.5 * marker_scale, longitude - 5   * marker_scale];
+	a4 = [latitude + 2.5 * marker_scale, longitude - 7   * marker_scale];
+	a5 = [latitude + 6.5 * marker_scale, longitude - 3.5 * marker_scale];
+	a6 = [latitude + 2.5 * marker_scale, longitude]
+	a7 = [latitude + 2.5 * marker_scale, longitude -2    * marker_scale];
+
+	b1 = [latitude + 2.5 * marker_scale, longitude + 2   * marker_scale];
+	b2 = [latitude + 2.5 * marker_scale, longitude + 5   * marker_scale];
+	b3 = [latitude - 2.5 * marker_scale, longitude + 5   * marker_scale];
+	b4 = [latitude - 2.5 * marker_scale, longitude + 7   * marker_scale];
+	b5 = [latitude - 6.5 * marker_scale, longitude + 3.5 * marker_scale];
+	b6 = [latitude - 2.5 * marker_scale, longitude];
+	b7 = [latitude - 2.5 * marker_scale, longitude + 2   * marker_scale];
+
+	arrow_up = [a1, a2, a3, a4, a5, a6, a7];
+	arrow_down = [d1, d2, d3, d4, d5, d6, d7];
+
+	options = {};
 }
