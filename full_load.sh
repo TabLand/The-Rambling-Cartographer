@@ -16,4 +16,4 @@ php parse_ip_time.php $TEMPFILE | sort -n | uniq > $IP_TIME_LIST
 #rm $TEMPFILE
 
 cd $DATA_DIRECTORY
-split --numeric-suffixes --lines=5000 $IP_TIME_LIST ""
+split --verbose --numeric-suffixes --lines=5000 $IP_TIME_LIST ""
