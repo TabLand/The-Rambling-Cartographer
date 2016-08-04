@@ -2,7 +2,7 @@
 source /etc/the-rambling-cartographer.conf
 cd $LOG_LOCATION
 
-FILES=$(find . -mmin -$MINUTES_AGO -exec ls {} \; | grep access | sed 's/.\///g' | sort | uniq )
+FILES=$(find . -mmin -$MINUTES_AGO -exec ls {} \; | grep access | grep -v gz | sed 's/.\///g' | sort | uniq )
 START=$(($(date +%s) - ($MINUTES_AGO * 60)))
 PATTERN=$(date -d @$START "+%d/%b/%Y:%H:")
 

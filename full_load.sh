@@ -3,7 +3,7 @@
 source /etc/the-rambling-cartographer.conf
 cd $LOG_LOCATION
 
-FILES=$(ls *access* | sed 's/.\///g' | sort | uniq )
+FILES=$(ls *access* | grep -v gz | sed 's/.\///g' | sort | uniq )
 
 echo "About to process log files $FILES"
 cat $FILES | awk '{print $1,$4,$5}' | sed 's/\[//g' | sed 's/\]//g' > $TEMPFILE
