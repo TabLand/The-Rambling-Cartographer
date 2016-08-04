@@ -11,6 +11,8 @@ cat $FILES | awk '{print $1,$4,$5}' | grep "$PATTERN" | sed 's/\[//g' | sed 's/\
 cd $SCRIPT_ROOT
 php parse_ip_time.php $TEMPFILE | sort -n | uniq >> $IP_TIME_LIST
 
+./cleanup.sh
+
 rm $TEMPFILE
 
 cd $DATA_DIRECTORY

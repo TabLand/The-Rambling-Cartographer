@@ -71,7 +71,7 @@ function initialize() {
     var options = { zoom: 3, dragging: true, zooming: true, tilting: true, position: [51.411952, -0.143645] };
     earth = new WE.map('earth_div', options);
 
-    WE.tileLayer('http://a.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+    WE.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
         minZoom: 0,
         maxZoom: 1000,
         attribution: 'https://github.com/stamen/toner-carto'
