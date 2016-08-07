@@ -6,6 +6,7 @@
 
 body,input {
 	font-family:'Josefin Sans',cicle;
+    font-size: 20px;
 }
 
 a{
@@ -37,19 +38,32 @@ div#earth_div {
     height: 100%;
     position: absolute;
     overflow: hidden; 
-    top: 10%;
     left: 0px;   
 }
 
 div#info {
-    width: 100%;
     overflow: hidden;
     padding-right: 10px;
     right: 0px;
-    bottom: 0px;
+    width: 100%;
     position: absolute;
     z-index: 1000;
     color: white;
     background: black;
-    text-align:right;
+    text-align: left;
+    position: absolute;
+    top: 0px;
+    height: 45px;
+}
+
+div#datetime, div#control_links{
+    font-size: 10px;
+    text-align: left;
+}
+
+div#push_right{
+    width: 200px;
+    right: 0px;
+    position: absolute;
+    top: 8px;
 }

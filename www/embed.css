@@ -1,0 +1,12 @@
+div#credits {
+    width: 100%;
+    overflow: hidden;
+    right: 0px;
+    bottom: 0px;
+    position: absolute;
+    z-index: 1000;
+    color: white;
+    background: black;
+    text-align:right;
+    padding: 5px;
+}

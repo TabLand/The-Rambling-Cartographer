@@ -60,7 +60,7 @@ function add_marker_to_map(now){
 
 function update_datetime_text(unixtime){
     datetime = new Date(unixtime * 1000);
-    datetime_element.text(datetime);
+    datetime_element.html("Showing locations of " + maximum_markers + " hits after:<br/>" + datetime);
     delete datetime;
 }
 
