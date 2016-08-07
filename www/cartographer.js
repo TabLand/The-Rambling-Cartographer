@@ -12,6 +12,9 @@ var new_marker_wait_time = 0.001;
 var marker_radius = 0.05;
 var marker_sections = 40;
 var marker_colour = '#f00';
+var earth = null;
+var zoom_base = 10;
+
 
 function cache_more_locations(){
     if(chunks_list.length != 0){
@@ -135,10 +138,13 @@ function make_and_add_marker(location_entry){
 	latitude = location_entry[0];
 	longitude = location_entry[1];
 
+    zoom = Math.E ^ (earth.getZoom() * Math.LN2);
+    if(zoom == 0) zoom = 1;
+    radius = marker_radius / zoom;
     circle = [];
     for(i = 0; i < (2 * Math.PI) ; i += (2 * Math.PI / marker_sections)){
-        lon = longitude + marker_radius * Math.cos(i);
-        lat = latitude  + marker_radius * Math.sin(i);
+        lon = longitude + radius * Math.cos(i);
+        lat = latitude  + radius * Math.sin(i);
         circle.push([lat,lon]);
     }
 	
